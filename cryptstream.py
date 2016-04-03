@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import sys,hashlib,os
+import sys,hashlib,os,subprocess,sys
 from Crypto.Cipher import AES
 
 class Upload:
@@ -9,6 +9,7 @@ class Upload:
     self.fingerprints = []
     self.tmpdir = "/tmp"
     self.key = "zuSLNG5gzkHNvjPL"
+    self.op = ""
 
   def encode(self,data,BLOCK_SIZE):
     def pad(s,BLOCK_SIZE): 
@@ -16,14 +17,21 @@ class Upload:
     cipher = AES.new(self.key)
     return cipher.encrypt(pad(data,BLOCK_SIZE))
 
-  def tmp_write(self,bary):
+  def tmp_write(self,bary,callback):
     bary = self.encode(bytes(bary),32)
     fingerprint = hashlib.md5(bary).hexdigest()
     self.fingerprints.append(fingerprint)
-    with open(os.path.join(self.tmpdir,fingerprint),"wb") as f:
+    self.op = os.path.join(self.tmpdir,fingerprint)
+    with open(self.op,"wb") as f:
       f.write(bary)
+    if callback:
+      def rp(arg):
+        if arg == "$op":
+          arg = self.op
+        return arg
+      subprocess.Popen(map(rp, callback),stdout=sys.stdout, stderr=sys.stderr).communicate()
 
-  def recv(self):
+  def recv(self,callback=None):
     bary_size = 0
     bary = bytearray()
     for buffer in sys.stdin.buffer:
@@ -31,7 +39,7 @@ class Upload:
         bary += buffer
         bary_size += len(buffer)
       else:
-        self.tmp_write(bary)
+        self.tmp_write(bary,callback)
         bary = bytearray()
         bary_size = 0
-    self.tmp_write(bary)
+    self.tmp_write(bary,callback)
