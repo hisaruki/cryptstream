@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import cryptstream,argparse,os,json,sys
+import cryptstream,argparse,subprocess,sys
 
 
 parser = argparse.ArgumentParser(description="BaiduStreamer")
-parser.add_argument('command', choices=["upload","download"])
 parser.add_argument('name')
 parser.add_argument('--start',type=int)
 args = parser.parse_args()
@@ -12,9 +11,14 @@ args = parser.parse_args()
 
 u = cryptstream.Upload()
 u.tmpdir = "/home/hisaruki/Desktop"
-u.recv([
-  ["ls","$op"]
-])
 
-with open(os.path.join(u.tmpdir,"list.json"),"w") as f:
-  f.write(json.dumps(u.fingerprints))
+def bypy():
+  proc = subprocess.Popen([
+    "bypy",
+    "upload",
+    str(u.p)
+  ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+  sys.stdout.write(proc[0].decode("utf-8"))
+  u.p.unlink()
+u.create(bypy)
+
