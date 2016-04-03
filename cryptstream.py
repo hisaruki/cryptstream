@@ -35,9 +35,3 @@ class Upload:
         bary = bytearray()
         bary_size = 0
     self.tmp_write(bary)
-
-u = Upload()
-u.tmpdir = "/home/hisaruki/Desktop"
-u.recv()
-print(u.fingerprints)
-
