@@ -12,7 +12,9 @@ args = parser.parse_args()
 
 u = cryptstream.Upload()
 u.tmpdir = "/home/hisaruki/Desktop"
-u.recv(["md5sum","$op"])
+u.recv([
+  ["ls","$op"]
+])
 
 with open(os.path.join(u.tmpdir,"list.json"),"w") as f:
   f.write(json.dumps(u.fingerprints))
