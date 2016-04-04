@@ -14,7 +14,6 @@ d = cryptstream.Download()
 def bydown():
   if not d.p.exists():
     frm = str( Path("/cryptstream/"+args.path) / d.p.name )
-    print(frm)
     proc = subprocess.Popen([
       "bypy",
       "download",
@@ -28,4 +27,5 @@ def rm():
   except:
     ""
   d.p.unlink()
+
 d.create(pre=bydown,post=rm,dec=True)

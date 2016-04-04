@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import sys,hashlib,json,base64
+import sys,hashlib,json
 from pathlib import Path
 from Crypto.Cipher import AES
 
@@ -12,9 +12,9 @@ class Upload:
 
   def AESenc(self,bary,BLOCK_SIZE):
     def pad(s,BLOCK_SIZE): 
-      return s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * "{"
+      return s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * b"\0"
     cipher = AES.new(self.key)
-    return cipher.encrypt(pad(base64.b64encode(bary).decode("utf-8"),BLOCK_SIZE))
+    return cipher.encrypt(pad(bytes(bary),BLOCK_SIZE))
 
   def recv(self):
     bary_size = 0
@@ -57,7 +57,7 @@ class Download:
 
   def AESdec(self,bin):
     cipher = AES.new(self.key)
-    return base64.b64decode(cipher.decrypt(bin))
+    return bytes(cipher.decrypt(bin))
 
   def create(self,pre=None,post=None,dec=True):
     self.p = Path(self.tmpdir,"index.json")
