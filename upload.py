@@ -11,8 +11,10 @@ args = parser.parse_args()
 
 u = cryptstream.Upload()
 u.tmpdir = "/home/hisaruki/Desktop"
+u.divide = 20*1024
 
 def bypy():
+  """
   proc = subprocess.Popen([
     "bypy",
     "upload",
@@ -20,5 +22,9 @@ def bypy():
   ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
   sys.stdout.write(proc[0].decode("utf-8"))
   u.p.unlink()
-u.create(bypy)
+  """
+u.create(bypy,True)
+
+
+
 
