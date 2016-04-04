@@ -10,7 +10,6 @@ args = parser.parse_args()
 
 
 d = cryptstream.Download()
-d.tmpdir = "/home/hisaruki/Desktop"
 
 def bydown():
   if not d.p.exists():
@@ -24,6 +23,9 @@ def bydown():
     ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 
 def rm():
+  try:
+    sys.stdout.buffer.write(d.file)
+  except:
+    ""
   d.p.unlink()
-
 d.create(pre=bydown,post=rm,dec=True)

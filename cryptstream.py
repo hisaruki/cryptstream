@@ -73,5 +73,4 @@ class Download:
       self.file = bin
       if dec:
         self.file = self.AESdec(bin)
-      sys.stdout.buffer.write(self.file)
       if post:post()

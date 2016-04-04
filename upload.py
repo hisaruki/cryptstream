@@ -11,7 +11,6 @@ args = parser.parse_args()
 
 
 u = cryptstream.Upload()
-u.tmpdir = "/home/hisaruki/Desktop"
 
 def byup():
   dst = str( Path("/cryptstream/"+args.path) / u.p.name )
