@@ -56,8 +56,12 @@ class Download:
     self.tmpdir = "/tmp"
 
   def AESdec(self,bin):
+    bary = bytearray(bin)
     cipher = AES.new(self.key)
-    return bytes(cipher.decrypt(bin))
+    result = bytearray(cipher.decrypt(bin))
+    while result[-1] == 0:
+      result.pop()
+    return result
 
   def create(self,pre=None,post=None,dec=True):
     self.p = Path(self.tmpdir,"index.json")
