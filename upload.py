@@ -24,6 +24,3 @@ def byup():
   u.p.unlink()
 
 u.create(post=byup)
-
-
-
