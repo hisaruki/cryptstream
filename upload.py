@@ -11,7 +11,6 @@ args = parser.parse_args()
 
 
 u = cryptstream.Upload()
-u.divide = 1024*1024
 def byup():
   dst = str( Path("/cryptstream/"+args.path) / u.p.name )
   proc = subprocess.Popen([

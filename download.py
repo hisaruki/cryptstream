@@ -10,7 +10,6 @@ args = parser.parse_args()
 
 
 d = cryptstream.Download()
-
 def bydown():
   if not d.p.exists():
     frm = str( Path("/cryptstream/"+args.path) / d.p.name )
