@@ -7,7 +7,6 @@ from Crypto.Cipher import AES
 class Upload:
   def __init__(self):
     self.divide = 20*1024*1024
-    self.key = "zuSLNG5gzkHNvjPL"
     self.tmpdir = "/tmp"
 
   def AESenc(self,bary,BLOCK_SIZE):
@@ -32,10 +31,10 @@ class Upload:
         bary_size += len(buffer)
     yield bary
 
-  def create(self,pre=None,post=None,enc=True):
+  def create(self,pre=None,post=None,enc=False):
     self.fingerprints = []
     for bary in self.recv():
-      self.file = bary
+      self.file,self.pad = bary,0
       if enc:
         self.file,self.pad = self.AESenc(bary,32)
       self.md5 = hashlib.md5(self.file).hexdigest()
@@ -53,7 +52,6 @@ class Upload:
 
 class Download:
   def __init__(self):
-    self.key = "zuSLNG5gzkHNvjPL"
     self.tmpdir = "/tmp"
 
   def AESdec(self,bin,pad):
@@ -64,7 +62,7 @@ class Download:
       result.pop()
     return result
 
-  def create(self,pre=None,post=None,dec=True):
+  def create(self,pre=None,post=None,dec=False):
     self.p = Path(self.tmpdir,"index.json")
     if pre:pre()
     with self.p.open("r") as f:
