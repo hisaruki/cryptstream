@@ -3,7 +3,6 @@
 import cryptstream,argparse,subprocess,sys,hashlib,json
 from pathlib import Path
 
-
 parser = argparse.ArgumentParser(description="BaiduStreamer")
 parser.add_argument('path',type=str)
 parser.add_argument('--start',type=int)
@@ -25,7 +24,7 @@ def byup():
       "upload",
       str(u.p),
       str( Path("/cryptstream/"+args.path) / u.p.name )
-    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    ], stdout=subprocess.PIPE, stderr=None).communicate()
     sys.stdout.write(proc[0].decode("utf-8"))
   u.p.unlink()
 
